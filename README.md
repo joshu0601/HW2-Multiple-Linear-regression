@@ -137,18 +137,6 @@ Lasso / 全部特徵在測試集 RMSE 更低（3.4），但 RFECV 只用 6 個�
 | 程式碼 | 協助撰寫 `src/pipeline.py`、`analysis.py`、`app.py` | 執行、檢查結果與圖表 |
 | 報告 | 協助撰寫 README 的 CRISP-DM 說明與結果解讀 | 審閱與修改 |
 
-## 📚 NotebookLM 摘要
-
-> ⚠️ **待補**：請將下列網路上同主題的解法加入 NotebookLM 作為來源，請 NotebookLM 產生摘要後，把它的輸出（100 字以上）貼在此處，取代這段說明。
-
-建議放入 NotebookLM 的來源：
-- [Enjoy Algorithms — Life expectancy prediction using linear regression](https://enjoyalgorithms.com/blog/life-expectancy-prediction-using-linear-regression)
-- [Analyzing Significant Predictors of Life Expectancy Across Countries (USCLAP 2022)](https://www.causeweb.org/usproc/sites/default/files/usclap/2022-1/analyzing-significant-predictors-of-life-expectancy-across-countries.pdf)
-- [Life Expectancy Prediction through Analysis of Immunization and HDI Factors (i-JOE)](https://online-journals.org/index.php/i-joe/article/view/33315)
-- [Modeling Life Expectancy with Interpretable Machine Learning Approaches (NHSJS)](https://nhsjs.com/?p=35051)
-- Kaggle 資料集頁面上的 Code 分頁：選 2–3 個票數高的 notebook
-
-建議提示詞：「請比較這些來源用 WHO Life Expectancy 資料集預測壽命的方法：資料清理、特徵選擇、使用的模型、評估指標與主要發現，用繁體中文寫 150 字摘要。」
 
 ---
 
