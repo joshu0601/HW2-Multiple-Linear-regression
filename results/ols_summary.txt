@@ -1,0 +1,32 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:        life_expectancy   R-squared:                       0.863
+Model:                            OLS   Adj. R-squared:                  0.862
+Method:                 Least Squares   F-statistic:                     2440.
+Date:                Tue, 27 Oct 2026   Prob (F-statistic):               0.00
+Time:                        13:56:36   Log-Likelihood:                -6235.7
+No. Observations:                2336   AIC:                         1.249e+04
+Df Residuals:                    2329   BIC:                         1.253e+04
+Df Model:                           6                                         
+Covariance Type:            nonrobust                                         
+=========================================================================================
+                            coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------------
+const                    52.9010      0.626     84.511      0.000      51.674      54.129
+adult_mortality          -0.0158      0.001    -19.729      0.000      -0.017      -0.014
+diphtheria                0.0350      0.003     10.126      0.000       0.028       0.042
+income_composition       28.7513      0.743     38.707      0.000      27.295      30.208
+log_infant_deaths         3.5028      0.605      5.786      0.000       2.316       4.690
+log_under_five_deaths    -3.8321      0.580     -6.608      0.000      -4.969      -2.695
+log_hiv_aids             -3.1732      0.141    -22.458      0.000      -3.450      -2.896
+==============================================================================
+Omnibus:                      119.869   Durbin-Watson:                   0.593
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              367.936
+Skew:                          -0.193   Prob(JB):                     1.27e-80
+Kurtosis:                       4.906   Cond. No.                     2.90e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.9e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.

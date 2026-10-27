@@ -1,0 +1,59 @@
+{
+  "dataset": "WHO Life Expectancy (Kaggle: kumarajarshi/life-expectancy-who)",
+  "rows_raw": 2938,
+  "rows_clean": 2928,
+  "n_candidate_features": 20,
+  "n_train": 2336,
+  "n_test": 592,
+  "n_train_countries": 146,
+  "n_test_countries": 37,
+  "selected_method": "RFECV",
+  "selected_features": [
+    "adult_mortality",
+    "diphtheria",
+    "income_composition",
+    "log_infant_deaths",
+    "log_under_five_deaths",
+    "log_hiv_aids"
+  ],
+  "train": {
+    "R2": 0.86277063748107,
+    "Adj_R2": 0.862417105417904,
+    "RMSE": 3.491881249098897,
+    "MAE": 2.580543347339138
+  },
+  "test": {
+    "R2": 0.8526843390740604,
+    "Adj_R2": 0.8511734092184098,
+    "RMSE": 3.709990407089961,
+    "MAE": 2.863565106155769
+  },
+  "pi_coverage_test": 0.9256756756756757,
+  "simple_lr": {
+    "feature": "income_composition",
+    "test": {
+      "R2": 0.6579764059951421,
+      "Adj_R2": 0.6573967049883542,
+      "RMSE": 5.652965832574791,
+      "MAE": 4.140647413317748
+    }
+  },
+  "coefficients": {
+    "const": 52.901,
+    "adult_mortality": -0.0158,
+    "diphtheria": 0.035,
+    "income_composition": 28.7513,
+    "log_infant_deaths": 3.5028,
+    "log_under_five_deaths": -3.8321,
+    "log_hiv_aids": -3.1732
+  },
+  "pvalues": {
+    "const": 0.0,
+    "adult_mortality": 0.0,
+    "diphtheria": 0.0,
+    "income_composition": 0.0,
+    "log_infant_deaths": 0.0,
+    "log_under_five_deaths": 0.0,
+    "log_hiv_aids": 0.0
+  }
+}
