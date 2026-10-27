@@ -8,14 +8,55 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.io as pio
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 from pipeline import (TARGET, candidate_features, clean, cv_rmse, evaluate, fit_ols,  # noqa: E402
                       load_raw, predict_with_intervals, select_features, split, vif_table)
 
-BLUE, BLUE_DARK, BLUE_PI, BLUE_CI = "#2a78d6", "#1c5cab", "rgba(42,120,214,0.18)", "rgba(42,120,214,0.45)"
-ORANGE, RED = "#eb6834", "#e34948"
+# 深色科技風配色：青綠為主色、橘色標示實際值、紅色標示負相關
+BLUE, BLUE_DARK, BLUE_PI, BLUE_CI = "#22d3ee", "#2dd4bf", "rgba(34,211,238,0.12)", "rgba(34,211,238,0.35)"
+ORANGE, RED = "#fb923c", "#f87171"
+GRID, MUTED = "#1e293b", "#94a3b8"
+
+pio.templates["hw2_dark"] = go.layout.Template(layout=dict(
+    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#e2e8f0", family="Noto Sans TC, sans-serif"),
+    title=dict(font=dict(color="#e2e8f0", size=16)),
+    xaxis=dict(gridcolor=GRID, zerolinecolor=GRID, linecolor="#334155", tickfont=dict(color=MUTED)),
+    yaxis=dict(gridcolor=GRID, zerolinecolor=GRID, linecolor="#334155", tickfont=dict(color=MUTED)),
+    legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=MUTED)),
+    hoverlabel=dict(bgcolor="#111a2e", bordercolor="#22d3ee", font=dict(color="#e2e8f0")),
+))
+pio.templates.default = "plotly_dark+hw2_dark"
+
+CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap');
+html, body, [class*="css"], .stMarkdown, .stText { font-family: 'Noto Sans TC', sans-serif; }
+.stApp { background: radial-gradient(1200px 600px at 10% -10%, #0e2a3a 0%, #0b1120 55%) fixed; }
+h1 { background: linear-gradient(90deg, #22d3ee, #2dd4bf 50%, #a78bfa); -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent; font-weight: 700 !important; letter-spacing: .5px; }
+h2, h3 { color: #67e8f9 !important; border-left: 4px solid #22d3ee; padding-left: .6rem; }
+[data-testid="stMetric"] {
+    background: linear-gradient(145deg, rgba(17,26,46,.95), rgba(15,23,42,.95));
+    border: 1px solid rgba(34,211,238,.35); border-radius: 14px; padding: 14px 18px;
+    box-shadow: 0 0 18px rgba(34,211,238,.12), inset 0 0 12px rgba(34,211,238,.05);
+    transition: box-shadow .2s, transform .2s;
+}
+[data-testid="stMetric"]:hover { box-shadow: 0 0 26px rgba(34,211,238,.35); transform: translateY(-2px); }
+[data-testid="stMetricLabel"] { color: #94a3b8 !important; }
+[data-testid="stMetricValue"] { color: #22d3ee; font-family: 'JetBrains Mono', monospace; }
+.stTabs [data-baseweb="tab-list"] { gap: 6px; border-bottom: 1px solid #1e293b; }
+.stTabs [data-baseweb="tab"] { background: #111a2e; border-radius: 10px 10px 0 0; padding: 8px 16px; color: #94a3b8; }
+.stTabs [aria-selected="true"] { background: rgba(34,211,238,.12) !important; color: #22d3ee !important; }
+[data-testid="stSidebar"] { background: linear-gradient(180deg, #0f172a, #0b1120); border-right: 1px solid #1e293b; }
+[data-testid="stPlotlyChart"], [data-testid="stDataFrame"] {
+    background: rgba(17,26,46,.6); border: 1px solid #1e293b; border-radius: 12px; padding: 6px; }
+code { color: #5eead4 !important; background: rgba(45,212,191,.1) !important; }
+</style>
+"""
 KAGGLE_URL = "https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who"
 
 # 特徵中文名稱（內部仍使用英文欄位名）
@@ -51,6 +92,7 @@ def method_zh(m: str) -> str:
 
 
 st.set_page_config(page_title="HW2 平均壽命多元線性回歸", page_icon="📈", layout="wide")
+st.markdown(CSS, unsafe_allow_html=True)
 
 
 @st.cache_data
@@ -104,7 +146,7 @@ pi["year"] = df.loc[s.X_test.index, "year"]
 coverage = ((pi["actual"] >= pi["pi_low"]) & (pi["actual"] <= pi["pi_high"])).mean()
 lvl = f"{1 - alpha:.0%}"
 
-st.title("📈 HW2 — 以多元線性回歸預測各國平均壽命")
+st.title("HW2 — 以多元線性回歸預測各國平均壽命")
 st.caption(f"資料集：WHO Life Expectancy · [Kaggle]({KAGGLE_URL}) · 2,938 筆 · 22 欄（20 個特徵）· CRISP-DM 流程")
 
 tabs = st.tabs(["1 商業理解", "2 資料理解", "3 資料準備", "4 建模", "5 評估", "6 部署 / 預測"])
@@ -182,7 +224,7 @@ with tabs[3]:
         "method": "方法", "n": "特徵數", "CV RMSE": "CV RMSE", "test R²": "測試 R²",
         "test RMSE": "測試 RMSE", "test MAE": "測試 MAE", "features": "選中的特徵"})
     st.dataframe(table.style.format({"CV RMSE": "{:.3f}", "測試 R²": "{:.3f}", "測試 RMSE": "{:.3f}",
-                                     "測試 MAE": "{:.3f}"}).highlight_min("CV RMSE", color="#cde2fb"),
+                                     "測試 MAE": "{:.3f}"}).highlight_min("CV RMSE", color="rgba(34,211,238,0.25)"),
                  width="stretch", hide_index=True)
     st.subheader(f"OLS 模型：{method_zh(method)}（{len(chosen)} 個特徵）")
     c1, c2 = st.columns([3, 2])
@@ -230,7 +272,7 @@ with tabs[4]:
     fig = go.Figure([
         go.Scatter(x=pi["pred"], y=pi["actual"], mode="markers", marker=dict(color=BLUE, size=5, opacity=0.6),
                    error_x=dict(type="data", symmetric=False, array=pi["pi_high"] - pi["pred"],
-                                arrayminus=pi["pred"] - pi["pi_low"], color="rgba(42,120,214,0.15)"),
+                                arrayminus=pi["pred"] - pi["pi_low"], color="rgba(34,211,238,0.18)"),
                    text=pi["country"] + " " + pi["year"].astype(str), name="測試",
                    hovertemplate="%{text}<br>預測 %{x:.1f} / 實際 %{y:.1f}<extra></extra>"),
         go.Scatter(x=lim, y=lim, mode="lines", line=dict(color="gray", dash="dash"), name="y = x"),
